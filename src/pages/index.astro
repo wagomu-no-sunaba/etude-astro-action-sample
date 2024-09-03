@@ -17,9 +17,7 @@ const posts = (await getCollection("blog"));
       {posts.map((post) => (
       <li>
         <a href={`/${post.slug}`}>
-          <article>
-            <p>{post.data.title}</p>
-          </article>
+          <p>{post.data.title}</p>
         </a>
       </li>
       ))}
