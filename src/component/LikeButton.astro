@@ -1,0 +1,43 @@
+---
+import { Icon } from "astro-icon/components";
+import { db, Likes } from "astro:db";
+
+type Props = {
+  slug: string;
+};
+
+const { slug } = Astro.props;
+
+const a = await db.select().from(Likes);
+console.log(a);
+if (a.length === 0) {
+console.log("inserting");
+  await db.insert(Likes).values({ postId: slug, likes: 0 });
+}
+---
+
+<button role="button" id="likeButton">
+  <Icon name="EmojioneV1HeartLeftTip" />
+  Like
+</button>
+<span id="likes">0</span>
+
+<script is:inline define:vars={{slug}}>
+  alert(slug);
+
+  import { actions } from "astro:actions";
+  // const likeLabel = document.querySelector("#likes");
+  const likeButton = document.querySelector("#likeButton");
+  likeButton.addEventListener("click", async () => {
+    alert("hello");
+    const {data, error} = await actions.addLike({ slug: slug });
+    if (!error) alert(data);
+    // if (!error) likeLabel?.textContent = res.likes;
+  });
+</script>
+
+<style>
+  button {
+    height: 2lh;
+  }
+</style>
